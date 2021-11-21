@@ -9,9 +9,6 @@
 // }
 
 function print1to10(){
-    for(let i = 0; i < 10;i++){
-       return console.log(i);
-    }
+    
 }
 
-print1to10();
