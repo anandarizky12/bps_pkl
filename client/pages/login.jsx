@@ -1,7 +1,8 @@
 import React from 'react'
 import router from 'next/router'
 import { route } from 'next/dist/server/router'
-import { WarningAlert } from '../components/alert/WarningAlert'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser } from '../actions/user'
 
 function login() {
 
@@ -17,8 +18,12 @@ function login() {
             [name]: value
     })};
 
+    const dispatch = useDispatch();
+    const { isLoggedIn } = useSelector(state => state.user);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const data = JSON.stringify(state);
         if (state.email === '' && state.password === '') {
             WarningAlert('Email dan password harus diisi')
         } else if (state.email === '') {
@@ -26,9 +31,10 @@ function login() {
         } else if (state.password === '') {
             WarningAlert('Password harus diisi')
         } else {
-            router.push('/')
+            dispatch(loginUser(data))
         }
-    }
+    };
+
 
 
 
@@ -39,7 +45,7 @@ function login() {
                     <p className="text-2xl text-gray-600">Selamat Datang</p>
                     <p className= "text-4xl font-bold text-blue-900">Sahabat Data!</p>
                 </div>
-                <form className="mt-10">
+                <form onSubmit={(e)=>handleSubmit(e)} className="mt-10">
                     <div className="flex flex-col my-2">
                         <label className="text-gray-600">Email <span className="text-red-600">*</span></label>
                         <input required name="email" onChange={(e)=>{handleInput(e)}} type="email" className="text-gray-600 my-2 border p-5 h-12 w-10/12 border-gray-300 rounded-md"></input>

@@ -41,7 +41,7 @@ export const loginUser = (email, password) => async (dispatch) => {
             }
         };
         
-        const res = await axios.post('/api/users/login', { email, password }, config);
+        const res = await axios.post('localhost:5000/api/login', { email, password }, config);
         
         dispatch({
             type: LOGIN_SUCCESS,
@@ -52,7 +52,7 @@ export const loginUser = (email, password) => async (dispatch) => {
         
         dispatch({
             type: LOGIN_FAILED,
-            payload: err.response.data.msg
+            payload: err
         });
 }};
 
