@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch} from "react-redux";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert  from "@material-ui/lab/Alert";
+import { sendAlert } from "../../actions/alertLogin";
 
 function AlertComponent(props) {
 	return <Alert  position="absolute" elevation={6} variant="filled"  {...props} />;
@@ -9,11 +10,17 @@ function AlertComponent(props) {
 
 const MyAlert = () => {
 	// mengambil data dari reducers / sifatnya sama kayak useState
-	const { id, message, typeToast } = useSelector((state) => state.alert);
+	const { id, message, typeToast} = useSelector((state) => state.alert);
+	console.log(id, message, typeToast);
 	const [open, setOpen] = useState(false);
 
+
 	useEffect(() => {
-		id && setOpen(true);
+	
+		if(id){
+			setOpen(true);
+		}
+	
 	}, [id]);
 
 	const handleClose = (event, reason) => {
@@ -22,6 +29,7 @@ const MyAlert = () => {
 		}
 
 		setOpen(false);
+		
 	};
 
 	// logic AlertComponent

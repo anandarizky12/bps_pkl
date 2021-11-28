@@ -1,4 +1,3 @@
-
 import * as types from "./actions_type/actions_type_alert";
 
 // buat function action buat ngirim signal ke reducer

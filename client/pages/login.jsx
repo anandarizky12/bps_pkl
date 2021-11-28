@@ -1,10 +1,12 @@
 import React from 'react'
 import router from 'next/router'
-import { route } from 'next/dist/server/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../actions/user'
+import MyAlert  from '../components/alert/alert'
 
 function login() {
+
+  
 
     const [state, setState] = React.useState({
         email: '',
@@ -19,27 +21,28 @@ function login() {
     })};
 
     const dispatch = useDispatch();
-    const { isLoggedIn } = useSelector(state => state.user);
-
+    const user = useSelector(state => state.user);
+  
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = JSON.stringify(state);
-        if (state.email === '' && state.password === '') {
-            WarningAlert('Email dan password harus diisi')
-        } else if (state.email === '') {
-            WarningAlert('Email harus diisi')
-        } else if (state.password === '') {
-            WarningAlert('Password harus diisi')
-        } else {
-            dispatch(loginUser(data))
-        }
+            dispatch(loginUser(state.email, state.password));
     };
+
+    const userLogin = useSelector((state)=>state.userLogin);
+    const { userInfo } = userLogin;
+    console.log(userLogin);
+    React.useEffect(()=>{
+        if(userInfo){
+            router.push('/')
+        }
+    },[userInfo])
 
 
 
 
     return (
         <div className="flex w-screen h-screen">
+            <MyAlert/>
             <div className="ml-36 mt-24 w-full">
                 <div className="">
                     <p className="text-2xl text-gray-600">Selamat Datang</p>

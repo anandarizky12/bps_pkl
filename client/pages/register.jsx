@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { route } from 'next/dist/server/router';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../actions/user';
+import MyAlert from '../components/alert/alert';
 function register() {
+
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.userRegister);
+
+    console.log(user)
     const [state, useState] = React.useState({
         nama: '',
         email: '',
@@ -10,7 +17,7 @@ function register() {
     });
 
     const handleInput = (e) => {
-        const [name, value] = e.target;
+        const {name, value} = e.target;
 
         useState({
             ...state,
@@ -19,36 +26,28 @@ function register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (state.email === '' && state.password === '') {
-            WarningAlert('Email dan password harus diisi')
-        } else if (state.email === '') {
-            WarningAlert('Email harus diisi')
-        } else if (state.password === '') {
-            WarningAlert('Password harus diisi')
-        }else if (state.nama === '') {
-            WarningAlert('Nama harus diisi')
-        }  else {
-            router.push('/')
-        }
+        dispatch(registerUser(state.nama, state.email, state.password));
+        
     }
 
     const router = useRouter();
 
     return (
         <div className="flex w-screen h-screen">
+            <MyAlert />
             <div className="ml-36 mt-12 w-full">
                 <div className="">
                     <p className="text-2xl text-gray-600">Registrasi</p>
                     <p className= "text-4xl font-bold text-blue-900">Sahabat Data!</p>
                 </div>
-                <form className="mt-10">
+                <form onSubmit={ e => handleSubmit(e) } className="mt-10">
                     <div className="flex flex-col my-2">
                         <label className="text-gray-600">Nama<span className="text-red-600">*</span></label>
                         <input onChange={(e)=>{handleInput(e)}} name="nama" type="text" className="text-gray-600 my-2 border p-5 h-12 w-10/12 border-gray-300 rounded-md"></input>
                     </div>
                     <div className="flex flex-col my-2">
                         <label className="text-gray-600">Email <span className="text-red-600">*</span></label>
-                        <input onChange={e=>handleInput(e)} name="email" type="email"  className="text-gray-600 my-2 border p-5 h-12 w-10/12 border-gray-300 rounded-md"></input>
+                        <input onChange={(e)=>handleInput(e)} name="email" type="email"  className="text-gray-600 my-2 border p-5 h-12 w-10/12 border-gray-300 rounded-md"></input>
                     </div>
                     <div className="flex flex-col my-2">
                         <label className="text-gray-600">Password <span  className="text-red-600">*</span></label>

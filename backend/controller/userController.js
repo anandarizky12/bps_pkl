@@ -4,12 +4,12 @@ const userModel = require('../models/user');
 const sendUserData = (user, statusCode, res)=>{
    
     const token = user.getSignedToken();
- 
+    console.log('yayayayayya')
     res.status(statusCode).send({
             success :true, token ,
             userData : {
                          'id'       : user._id,
-                         'username' : user.username,
+                         'name'     : user.name,
                          'email'    : user.email,
                          'admin'    : user.admin,
                         }
@@ -21,47 +21,51 @@ const sendUserData = (user, statusCode, res)=>{
 
 const register = async (req,res) => {
     
-    const { username, email, password } = req.body;
-
+    const { name, email, password } = req.body;
+    console.log(name, email, password);
         try{
             
             const checkEmail = await userModel.findOne({email});
 
             if(!checkEmail){
                 
-                const user = await userModel.create({username, email, password});
-
+                const user = await userModel.create({name, email, password});
+                console.log(user);
                 sendUserData(user, 201, res);
-            };
-            res.status(400).send({message : 'Sorry, Email already exists'});
+                return;
+            }else{
+                return res.status(400).send({message : 'Sorry, Email already exists'});
+            }
 
         }
         catch(err){
             res.status(500).send({message : err.message});
+            console.log(err);
         };
 };
 
 const login = async (req ,res) =>{
 
     const { email, password } = req.body;
-    
+    console.log(email, password);
     if(!email || !password){
         return res.status(400).send({message : 'Please provide Email or Password'});
     };
 
     try{
         const user = await userModel.findOne({email}).select("+password");
-
+        console.log(user);
         if(!user){
             
-            res.status(401).send({message : 'The email and password you entered did not match our records. Please double-check and try again.'});
+            return res.status(401).send({message : 'The email and password you entered did not match our records. Please double-check and try again.'});
 
         };
 
         const match = await user.matchPassword(password);
 
+        console.log(match);
         if(!match){
-            res.status(401).send({message : 'Password incorrect'})
+            return res.status(401).send({message : 'Password incorrect'})
         };
 
 
@@ -69,6 +73,7 @@ const login = async (req ,res) =>{
 
     }catch(err){
         res.status(500).send({message : err.message});
+        console.log(err.message);
     }
 
 };
