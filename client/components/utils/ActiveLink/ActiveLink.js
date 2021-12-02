@@ -17,7 +17,7 @@ function ActiveLink({ children, href, type }) {
     <a
       href={href}
       onClick={handleClick}
-      className={type == "link" ? router.asPath === href ? "text-white" : "text-gray-600" : type == "bottom" ? "text-green-500" : "text-green-500"}
+      className={type == "link" ? router.asPath === href ? "text-yellow-400 font-semibold cursor" : "text-gray-200 " : type == "bottom" ? "text-green-500" : "text-green-500"}
     >
       {children}
     </a>

@@ -25,7 +25,7 @@ router.get('/user/:id', isAuth, getUser);
 
 //question routes
 // router.get('/question', isAuth, isAdmin, getQuestion);
-router.post('/question', isAuth, isAdmin, createQuestion);
+router.post('/question', isAuth, createQuestion);
 router.put('/question/:id', isAuth, isAdmin, updateQuestion);
 router.delete('/question/:id', isAuth, isAdmin, deleteQuestion);
 

@@ -3,22 +3,25 @@ const questionModel = require('../models/questions');
 
 const createQuestion = async (req, res) => {
     
-    const { title, question, options , answer} = req.body;
-    const { _id } = req.user;
+    const { title, question, options , answer, private, userid} = req.body;
+    
 
     const newQuestion = new questionModel({
         title,
         question,
-        options : answer.map(n =>{
+        private,
+        answer : options.map(n =>{
             return {option:n}
         }),
-        _creator: _id
+        userid
     });
     try {
         const question = await newQuestion.save();
-        res.status(200).json(question);
+        return res.status(200).send({ question, message : "Successfully create Question" });
+      
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error);
+        res.status(500).send({ message: error.message });
     }
 
 };

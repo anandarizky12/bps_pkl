@@ -4,6 +4,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {
     user, userRegisterReducer, userLoginReducer
 } from './reducers/userReducers';
+import {
+    createQuestionReducer, editQuestionReducer, deleteQuestionReducer,
+} from './reducers/questionReducers';
 import Alert from './reducers/alertReducers';
 
 const reducers = combineReducers({
@@ -13,6 +16,9 @@ const reducers = combineReducers({
     userLogin: userLoginReducer,
     userRegister : userRegisterReducer,
     alert: Alert,
+    create: createQuestionReducer,
+    delete: deleteQuestionReducer, 
+    edit: editQuestionReducer,
     
 });
 

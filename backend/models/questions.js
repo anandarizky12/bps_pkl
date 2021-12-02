@@ -14,7 +14,15 @@ const options = mongoose.Schema({
 const questionSchema = mongoose.Schema({
     title : String,
     question : String,
-    options : [options],
+    private :{
+        type : Boolean,
+        default : false,
+    },
+    userid : {
+        type : String,
+        required : true
+    },
+    answer : [options],
     _creator : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'

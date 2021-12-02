@@ -8,20 +8,20 @@ function AlertComponent(props) {
 	return <Alert  position="absolute" elevation={6} variant="filled"  {...props} />;
 }
 
-const MyAlert = () => {
+const MyAlert = ({ open, setOpen }) => {
 	// mengambil data dari reducers / sifatnya sama kayak useState
 	const { id, message, typeToast} = useSelector((state) => state.alert);
-	console.log(id, message, typeToast);
-	const [open, setOpen] = useState(false);
+
+	// const [open, setOpen] = useState(false);
 
 
-	useEffect(() => {
+	// useEffect(() => {
 	
-		if(id){
-			setOpen(true);
-		}
+	// 	if(id){
+	// 		setOpen(true);
+	// 	}
 	
-	}, [id]);
+	// }, [id]);
 
 	const handleClose = (event, reason) => {
 		if (reason === "clickaway") {
