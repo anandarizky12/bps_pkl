@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { route } from 'next/dist/server/router';
+import router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../actions/user';
 import MyAlert from '../components/alert/alert';
 function register() {
 
     const dispatch = useDispatch();
-    const user = useSelector(state => state.userRegister);
+    const { userInfo } = useSelector(state => state.userRegister);
 
-    console.log(user)
+    console.log(userInfo)
     const [state, useState] = React.useState({
         nama: '',
         email: '',
@@ -26,9 +26,22 @@ function register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(registerUser(state.nama, state.email, state.password));
-        
-    }
+        dispatch(registerUser(state.nama, state.email, state.password))
+        if(userInfo){
+            if(userInfo.data.success){
+                alert('Berhasil')
+                router.push('/login')
+            }
+        }
+    };
+    
+    useEffect(() => {
+        if(userInfo){
+            if(userInfo.data.success){
+                router.push('/login')
+            }
+        }
+    }, [userInfo]);
 
     const router = useRouter();
 

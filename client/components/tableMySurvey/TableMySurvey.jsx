@@ -3,8 +3,10 @@ import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import EditIcon from '@mui/icons-material/Edit';
+import moment from 'moment';
 
-const TableMySurvey = () => {
+const TableMySurvey = ({questions}) => {
+
     return (
         <div className="flex justify-center flex-col items-center">
             <div className="w-8/12">
@@ -21,46 +23,25 @@ const TableMySurvey = () => {
                     <th className="font-light border w-1/12">Share</th>
 
                 </tr>
-        
-             <tr className="text-center text-xs h-20 text-gray-500 bg-gray-100">
+            {questions.length >= 1 && questions.map((question, index) => {
+                
+                return (
+                    <tr key={index} className="text-center text-xs h-20 text-gray-500 bg-gray-100">
                  
-                 <td  className="text-left pl-2 ">
-                     <p className="text-blue-500 font-bold">Title fdsfsdfsdf</p>
-                     <p className="text-gray-400">Created 08/12/2000</p>
-                 </td>
-                 <td className="font-bold text-lg ">120</td>
-                 <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><DeleteIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><ShareIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-             
-             </tr>
-             <tr className="text-center text-xs h-20 text-gray-500 bg-gray-100">
-                 
-                 <td  className="text-left pl-2 ">
-                     <p className="text-blue-500 font-bold">Title fdsfsdfsdf</p>
-                     <p className="text-gray-400">Created 08/12/2000</p>
-                 </td>
-                 <td className="font-bold text-lg ">120</td>
-                 <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><DeleteIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><ShareIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-             
-             </tr>
-             <tr className="text-center text-xs h-20 text-gray-500 bg-gray-100">
-                 
-                 <td  className="text-left pl-2 ">
-                     <p className="text-blue-500 font-bold">Title fdsfsdfsdf</p>
-                     <p className="text-gray-400">Created 08/12/2000</p>
-                 </td>
-                 <td className="font-bold text-lg ">120</td>
-                 <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><DeleteIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                 <td><ShareIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-             
-             </tr>
+                            <td  className="text-left pl-2 ">
+                                <p className="text-blue-500 font-bold">{question.title}</p>
+                                <p className="text-gray-400">Created {moment(question.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            </td>
+                            <td className="font-bold text-lg ">{question.response}</td>
+                            <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+                            <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+                            <td><DeleteIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+                            <td><ShareIcon onClick={()=>alert(question._id)}  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+                
+                     </tr>
+                    )
+            })}
+          
             </table>
         </div>
     )

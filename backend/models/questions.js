@@ -23,6 +23,10 @@ const questionSchema = mongoose.Schema({
         required : true
     },
     answer : [options],
+    response : {
+        type : Number,
+        default : 0
+    },
     _creator : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'

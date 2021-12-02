@@ -4,7 +4,7 @@ const userModel = require('../models/user');
 const sendUserData = (user, statusCode, res)=>{
    
     const token = user.getSignedToken();
-    console.log('yayayayayya')
+    
     res.status(statusCode).send({
             success :true, token ,
             userData : {
@@ -47,7 +47,6 @@ const register = async (req,res) => {
 const login = async (req ,res) =>{
 
     const { email, password } = req.body;
-    console.log(email, password);
     if(!email || !password){
         return res.status(400).send({message : 'Please provide Email or Password'});
     };

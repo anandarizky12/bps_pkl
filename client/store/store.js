@@ -5,7 +5,7 @@ import {
     user, userRegisterReducer, userLoginReducer
 } from './reducers/userReducers';
 import {
-    createQuestionReducer, editQuestionReducer, deleteQuestionReducer,
+    createQuestionReducer, editQuestionReducer, deleteQuestionReducer, getAllQuestionsReducer, getMyQuestionsReducer
 } from './reducers/questionReducers';
 import Alert from './reducers/alertReducers';
 
@@ -19,6 +19,8 @@ const reducers = combineReducers({
     create: createQuestionReducer,
     delete: deleteQuestionReducer, 
     edit: editQuestionReducer,
+    myQuestion : getMyQuestionsReducer,
+    allQuestion : getAllQuestionsReducer
     
 });
 
