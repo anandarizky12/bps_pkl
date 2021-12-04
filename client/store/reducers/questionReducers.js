@@ -3,6 +3,10 @@ import {
     CREATE_QUESTION, 
     CREATE_QUESTION_SUCCESS,
     CREATE_QUESTION_FAILED,
+   
+    MAKE_VOTE, 
+    MAKE_VOTE_SUCCESS,
+    MAKE_VOTE_FAILED,
     
     DELETE_QUESTION,
     DELETE_QUESTION_SUCCESS,
@@ -37,6 +41,18 @@ import {
       }
     }
     
+  export const voteReducer = (state = {}, action) => {
+      switch (action.type) {
+        case MAKE_VOTE:
+          return { loading: true }
+        case MAKE_VOTE_SUCCESS:
+          return { loading: false, data: action.payload }
+        case MAKE_VOTE_FAILED:
+          return { loading: false, error: action.payload }
+        default:
+          return state
+      }};
+      
   export const getAllQuestionsReducer = (state = {}, action) => {
         
     switch(action.type) {

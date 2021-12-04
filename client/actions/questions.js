@@ -139,8 +139,7 @@ export const editQuestion = (id, question) => async (dispatch, getState) => {
             type: EDIT_QUESTION_SUCCESS,
             payload: data
         });
-        
-        console.log(error);
+
     }
 
 };
@@ -167,7 +166,7 @@ export const getMyQuestions = (id) => async (dispatch, getState) => {
 
         const data = await axios.get('/api/question/'+id, config);
 
-        console.log(data)
+ 
         dispatch({
             type: GET_MYQUESTIONS_SUCCESS,
             payload: data
@@ -183,10 +182,34 @@ export const getMyQuestions = (id) => async (dispatch, getState) => {
 }
 
 
-const makeVote = () => async (id, vote) => {
+export const makeVote = (id , idoption) => async (id, vote) => {
     try{
+        dispatch({
+            type: MAKE_VOTE
+        });
 
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userInfo.token,
+            }
+        };
+
+        const data = await axios.put(`/${id}/${idoption}/votes`, vote, config);
+
+        dispatch({
+            type: MAKE_VOTE_SUCCESS,
+            payload: data
+        });
     }catch(error){
+        dispatch({
+            type: MAKE_VOTE_FAILED,
+            payload: error
+        });
         console.log(error);
     }
 }

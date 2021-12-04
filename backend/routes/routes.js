@@ -16,7 +16,8 @@ const {
     createQuestion,
     updateQuestion,
     deleteQuestion,
-    getMyQuestions
+    getMyQuestions,
+    vote
 } = require('../controller/questionController');
 
 //user routes
@@ -30,6 +31,7 @@ router.post('/question', isAuth, createQuestion);
 router.put('/question/:id', isAuth, isAdmin, updateQuestion);
 router.delete('/question/:id', isAuth, isAdmin, deleteQuestion);
 router.get('/question/:id', isAuth, getMyQuestions);
+router.patch('/:id/:idoption/votes', vote);
 
 
 module.exports = router;

@@ -5,7 +5,12 @@ import {
     user, userRegisterReducer, userLoginReducer
 } from './reducers/userReducers';
 import {
-    createQuestionReducer, editQuestionReducer, deleteQuestionReducer, getAllQuestionsReducer, getMyQuestionsReducer
+    createQuestionReducer, 
+    editQuestionReducer, 
+    deleteQuestionReducer, 
+    getAllQuestionsReducer, 
+    getMyQuestionsReducer ,
+    voteReducer
 } from './reducers/questionReducers';
 import Alert from './reducers/alertReducers';
 
@@ -20,7 +25,8 @@ const reducers = combineReducers({
     delete: deleteQuestionReducer, 
     edit: editQuestionReducer,
     myQuestion : getMyQuestionsReducer,
-    allQuestion : getAllQuestionsReducer
+    allQuestion : getAllQuestionsReducer,
+    voteReducer
     
 });
 
