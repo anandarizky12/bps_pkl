@@ -17,7 +17,7 @@ function Navbar() {
                 : false
             }
         >
-            <div className="bg-blue-900 text-gray-200 relative z-10 px-6">
+            <div className="bg-blue-900 text-gray-200 w-full fixed z-10 px-6 top-0 inset-x-0">
                 <div className="h-14 py-4 container mx-auto flex items-center justify-center">
                     <div x-data="{ open: false }"   className="z-10 flex-1">
                         <div   
@@ -42,7 +42,7 @@ function Navbar() {
                         height={50}
                     />
                     </Link>
-                    <div class="flex-1 flex items-center justify-end text-xs uppercase tracking-wider gap-4">
+                    <div className="flex-1 flex items-center justify-end text-xs uppercase tracking-wider gap-4">
                         <Avatar size="small"/>
 				    </div>
                 </div>

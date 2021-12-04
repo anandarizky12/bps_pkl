@@ -3,6 +3,10 @@ import {
     CREATE_QUESTION, 
     CREATE_QUESTION_SUCCESS,
     CREATE_QUESTION_FAILED,
+
+    MAKE_VOTE,
+    MAKE_VOTE_SUCCESS,
+    MAKE_VOTE_FAILED,
    
     DELETE_QUESTION,
     DELETE_QUESTION_SUCCESS,
@@ -174,6 +178,15 @@ export const getMyQuestions = (id) => async (dispatch, getState) => {
             type: GET_MYQUESTIONS_FAILED,
             payload: error
         });
+        console.log(error);
+    }
+}
+
+
+const makeVote = () => async (id, vote) => {
+    try{
+
+    }catch(error){
         console.log(error);
     }
 }

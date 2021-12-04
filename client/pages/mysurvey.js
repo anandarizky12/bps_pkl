@@ -2,23 +2,24 @@ import React from 'react'
 import TableMySurvey from '../components/tableMySurvey/TableMySurvey'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyQuestions } from '../actions/questions'
+import MySurvey from '../components/tableMySurvey/MySurvey'
+import LinearProgress from '@mui/material/LinearProgress';
 
 function mysurvey() {
 
     const dispatch = useDispatch()
-    const { data }= useSelector(state => state.myQuestion)
+    const { data, message }= useSelector(state => state.myQuestion)
     const { userInfo } = useSelector(state => state.userLogin);
     const [questions, setQuestions] = React.useState([]);
 
     // const id = localStorage.getItem('userInfo')
 
  
-    console.log(questions, data)
+    console.log(questions, data, userInfo)
 
     React.useEffect(() => {
         if(userInfo){
             dispatch(getMyQuestions(userInfo.userData.id));
-            console.log(userInfo.userData.id, "ini")
         }
     }, [userInfo]);
 
@@ -30,7 +31,12 @@ function mysurvey() {
 
     return (
         <div>
-            <TableMySurvey questions={questions}/>
+            {questions.length > 0 && <TableMySurvey questions={questions} /> }
+            {data ? 
+            data.data.question.length === 0  && <MySurvey /> 
+            : 
+             <div className="w-full"><LinearProgress/></div>}
+            
         </div>
     )
 }

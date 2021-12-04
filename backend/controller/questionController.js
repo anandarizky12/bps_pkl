@@ -85,7 +85,7 @@ const getMyQuestions = async (req, res) => {
     
         const question = await questionModel.find({userid : id});
 
-        if(question.length < 1) return res.status(404).send({question , message : `You Have No Survey Yet`});
+        if(!question) return res.status(200).send({ message : `You Have No Survey Yet`});
 
         res.status(200).send({question , message : "Successfully get  Questions"});
 

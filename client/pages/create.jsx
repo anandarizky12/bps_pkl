@@ -71,7 +71,7 @@ function create() {
 
 
     return (
-      <div className="px-10 py-5 flex align-center justify-center">
+      <div className= "mt-12 py-5 flex align-center justify-center">
              <form onSubmit={(e)=>handleSubmit(e)} className="border border-2 w-9/12 p-5">
                 <p className="text-2xl font-light my-5">Create a new Survei</p>
                 <TextField

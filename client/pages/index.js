@@ -13,7 +13,7 @@ export default function Home() {
  },[userInfo])
 
   return (
-    <div className="px-10 py-5">
+    <div className="px-10 py-5 mt-10">
       <p className="text-3xl font-light">Welcome, <span className="text-yellow-600">Alex</span>!</p>
     </div>
   )
