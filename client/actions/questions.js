@@ -19,6 +19,10 @@ import {
     GET_MYQUESTIONS,
     GET_MYQUESTIONS_SUCCESS,
     GET_MYQUESTIONS_FAILED,
+ 
+    GET_QUESTION,
+    GET_QUESTION_SUCCESS,
+    GET_QUESTION_FAILED,
     
     
     GET_ALL_QUESTIONS,
@@ -28,6 +32,30 @@ import {
 } from  './actions_type/actions_type_question';
 import axios from 'axios';
 
+export const AllPublicQuestion = () => async (dispatch, getState) => {
+  
+    try{
+        dispatch({ 
+            type: GET_ALL_QUESTIONS
+        });
+
+        const { data } = await axios.get('/api/publicquestion');
+        dispatch({
+            type: GET_ALL_QUESTIONS_SUCCESS,
+            payload: data
+        });
+        
+
+    }catch(error){
+        dispatch({
+            type: GET_ALL_QUESTIONS_FAILED,
+            payload: error
+        });
+        console.log(error.message, "ini data erro");
+
+    }
+
+};
 
 
 export const createQuestion = (question) => async (dispatch, getState) => {
@@ -37,34 +65,20 @@ export const createQuestion = (question) => async (dispatch, getState) => {
             type: CREATE_QUESTION
         });
 
-       
-        const {
-            userLogin: { userInfo },
-        } = getState();
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + userInfo.token,
-            }
-        };
-      
 
-        const data  = await axios.post('/api/question', question, config);
-        console.log(data, "ini data");
         dispatch({
             type: CREATE_QUESTION_SUCCESS,
-            payload: data
+            payload: question.message
         });
         
 
     }catch(error){
         dispatch({
-            type: CREATE_QUESTION_SUCCESS,
-            payload: data
+            type: CREATE_QUESTION_FAILED,
+            payload: error
         });
-        
-        console.log(error);
+        console.log(error.message, "ini data erro");
+
     }
 
 };
@@ -164,7 +178,7 @@ export const getMyQuestions = (id) => async (dispatch, getState) => {
             }
         };
 
-        const data = await axios.get('/api/question/'+id, config);
+        const data = await axios.get('/api/myquestion/'+id, config);
 
  
         dispatch({
@@ -181,8 +195,43 @@ export const getMyQuestions = (id) => async (dispatch, getState) => {
     }
 }
 
+export const getQuestion = (id) => async (dispatch, getState) => {
 
-export const makeVote = (id , idoption) => async (id, vote) => {
+    try{
+
+        dispatch({
+            type: GET_QUESTION
+        });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + userInfo.token,
+            }
+        };
+
+        const data = await axios.get('/api/question/'+id, config);
+
+ 
+        dispatch({
+            type: GET_QUESTION_SUCCESS,
+            payload: data
+        });
+
+    }catch(error){
+        dispatch({
+            type: GET_QUESTION_FAILED,
+            payload: error
+        });
+        console.log(error);
+    }
+}
+
+export const makeVote = (id , idoption, userId) => async (id, vote) => {
     try{
         dispatch({
             type: MAKE_VOTE
@@ -199,7 +248,7 @@ export const makeVote = (id , idoption) => async (id, vote) => {
             }
         };
 
-        const data = await axios.put(`/${id}/${idoption}/votes`, vote, config);
+        const data = await axios.put(`/${id}/${idoption}/${userId}/votes`, vote, config);
 
         dispatch({
             type: MAKE_VOTE_SUCCESS,

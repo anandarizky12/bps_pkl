@@ -10,6 +10,8 @@ import MyAlert from '../components/alert/alert';
 import { createQuestion } from '../actions/questions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
+import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function create() {
     
@@ -26,7 +28,7 @@ function create() {
       setLoading(true);
       let answer = [];
       let data = {};
-
+     
       for (let val in payload) {
         if(val.slice(0,6) == "answer"){
           answer.push(payload[val]);
@@ -36,23 +38,33 @@ function create() {
       if(answer.length >= 2){
         
         data['options'] = answer;
-     
-        dispatch(createQuestion(data))
-        .then(() => {
-          setLoading(false);
-          setAlert(true);
-          setPayload({private : false, userid : userInfo ? userInfo.userData.id : null });
-          dispatch({type: 'SUCCESS_ALERT', payload: 'Successfully created Data'});
-        })
-        .then(res=>window.location.reload());
-      
-
-      }else{
-        setLoading(false);
-        setAlert(true);
-        dispatch({type: 'ERROR_ALERT', payload: 'Please add atleast two options'});
-      }
-    };
+       
+        const config = {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + userInfo.token
+          }
+        };
+               axios
+               .post('/api/question', data, config)
+               .then(res => {
+                 dispatch(createQuestion(res.data))
+                 setLoading(false);
+                 setAlert(true);
+                 setPayload({private : false, userid : userInfo ? userInfo.userData.id : null });
+                 dispatch({type: 'SUCCESS_ALERT', payload: 'Successfully created Data'});
+                }).catch((err)=>{
+                 setLoading(false)
+                 const msg = JSON.parse(err.request.response);     
+                 setAlert(true);
+                 dispatch({type: 'ERROR_ALERT', payload: msg});
+               })
+            }else{
+              setLoading(false);
+              setAlert(true);
+              dispatch({type: 'ERROR_ALERT', payload: 'Please add at least two options'});
+            }
+          };
 
     const handleChange = (e) => {
       const{ name, value } = e.target;
@@ -72,7 +84,7 @@ function create() {
 
     return (
       <div className= "mt-12 py-5 flex align-center justify-center">
-             <form onSubmit={(e)=>handleSubmit(e)} className="border border-2 w-9/12 p-5">
+             <form onSubmit={(e)=>handleSubmit(e)} className="border  w-9/12 p-5">
                 <p className="text-2xl font-light my-5">Create a new Survei</p>
                 <TextField
                 id="filled-multiline-static"
@@ -126,13 +138,21 @@ function create() {
                 style={{marginTop: '10px'}}
                 />
                 <Autoaddoptions add = {optionAdd} setadd={setoptionAdd} handleChange={handleChange}/>
-                <FormGroup>
-                  <FormControlLabel  control={<Checkbox id={"private"} onChange={(e)=>handleCheckBox(e)} />} label="Private" />
-                  <p className="font-normal text-gray-500 text-xs">*if it's private, the survey only shown to user who have the link (Not Public)</p>
-                </FormGroup>
+              
+                <div>
+                  <input id={"private"} type="checkbox" onChange={(e)=>handleCheckBox(e) }/>
+                  <label for="private"> Private</label>
+                   <p className="font-normal text-gray-500 text-xs">*if it's private, the survey only shown to user who have the link (Not Public)</p>
+                </div>
                 <div className="flex justify-end items-center">
-                   <Button size="medium" startIcon={<RestartAltIcon />} color="secondary" style={{marginTop : '10px', marginRight : '10px', width : '90px'}} variant="outlined" type="submit">Reset</Button>
-                   <Button size="medium" startIcon={<SaveIcon />} color="primary" style={{marginTop : '10px', width : '90px'}} variant="outlined" type="submit">Save</Button>
+                   <button className="text-gray-500" style={{marginTop : '10px', marginRight : '10px', width : '90px'}}  type="submit">
+                      <RestartAltIcon />
+                      Reset
+                     </button>
+                   <button className="text-gray-500" color="primary" style={{marginTop : '10px', width : '90px'}}  type="submit">
+                     {loading ? <CircularProgress size={22} /> : <SaveIcon />}
+                     Save
+                    </button>
                 </div>
                 {/* {loading ? <p className="text-4xl  my-5">Loading...</p> : null} */}
                 <MyAlert setOpen={ setAlert } open = {alert}/>

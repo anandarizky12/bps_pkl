@@ -2,7 +2,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
-    user, userRegisterReducer, userLoginReducer
+   userRegisterReducer, userLoginReducer
 } from './reducers/userReducers';
 import {
     createQuestionReducer, 
@@ -10,6 +10,7 @@ import {
     deleteQuestionReducer, 
     getAllQuestionsReducer, 
     getMyQuestionsReducer ,
+    getQuestionReducer ,
     voteReducer
 } from './reducers/questionReducers';
 import Alert from './reducers/alertReducers';
@@ -17,7 +18,7 @@ import Alert from './reducers/alertReducers';
 const reducers = combineReducers({
 
     // Add your reducers here
-    user,
+  
     userLogin: userLoginReducer,
     userRegister : userRegisterReducer,
     alert: Alert,
@@ -26,6 +27,7 @@ const reducers = combineReducers({
     edit: editQuestionReducer,
     myQuestion : getMyQuestionsReducer,
     allQuestion : getAllQuestionsReducer,
+    question : getQuestionReducer,
     voteReducer
     
 });

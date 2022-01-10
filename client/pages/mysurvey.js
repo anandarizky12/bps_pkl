@@ -14,8 +14,6 @@ function mysurvey() {
 
     // const id = localStorage.getItem('userInfo')
 
- 
-    console.log(questions, data, userInfo)
 
     React.useEffect(() => {
         if(userInfo){
@@ -31,11 +29,13 @@ function mysurvey() {
 
     return (
         <div>
-            {questions.length > 0 && <TableMySurvey questions={questions} /> }
+
             {data ? 
             data.data.question.length === 0  && <MySurvey /> 
             : 
              <div className="w-full"><LinearProgress/></div>}
+            {questions.length > 0 && <TableMySurvey questions={questions} /> }
+        
             
         </div>
     )

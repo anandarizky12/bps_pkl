@@ -3,11 +3,38 @@ const questionModel = require('../models/questions');
 const userModel = require('../models/user');
 const mongoose = require('mongoose');
 
+
+const getAllQuestions = async (req, res) => {
+    try{
+
+     const data = await questionModel.find();
+
+     return res.status(200).send({ message : "Get all Order Success", data })
+
+
+
+    }catch(err){
+        console.log(err)
+        res.status(500).send({message : 'failed to get order'})
+    }
+}
+
+const getPublicQuestion = async (req, res) =>{
+    try{
+        const data = await questionModel.find({ private : false }).
+        populate({ path: '_creator', select: 'name email' })
+
+        return res.status(200).send({message : 'Success get Data' , data})
+    }catch(err){
+        return res.status(400).send({message : err.message})
+    }
+}
+
 const createQuestion = async (req, res) => {
     
     const { title, question, options , answer, private, userid} = req.body;
-    
-
+  
+  
     const newQuestion = new questionModel({
         title,
         question,
@@ -15,9 +42,11 @@ const createQuestion = async (req, res) => {
         answer : options.map(n =>{
             return {option:n}
         }),
-        userid
+        userid,
+        _creator : userid
     });
     try {
+  
         const question = await newQuestion.save();
         return res.status(200).send({ question, message : "Successfully create Question" });
       
@@ -29,25 +58,43 @@ const createQuestion = async (req, res) => {
 };
 
 const vote = async (req, res) => {
-  
-    const { questionId, idoption } = req.params;
+  try{
+    const { userId, idoption , id} = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `Id Invalid`});
 
     const question = await questionModel.findById(id);
-    const vote = question.options.map((n)=>{
-        n._id == idoption ? {
+   
+    const vote = question.answer.map((n)=>{
+        return n._id == idoption ? {    
             votes: n.votes + 1 ,
             option : n.option,
-            _id : idoption
+            _id : n._id
         } 
         : n
     });
 
-    question.options = vote;
-    question.response = question.response + 1;
-    await question.save();
-    return res.status(200).json(question)
+
+    if (question.voted.filter(user => user.toString() === userId).length <= 0){
+        question.voted.push(userId);
+        question.answer = vote;
+        question.response = question.response + 1;
+        await question.save();
+
+        return res.status(202).send({question , message : "succesfully vote" } );
+      } else {
+        
+        return res.status(500).json('You Already voted');
+      }
+    }catch(err){
+        console.log(err)
+        res.status(500).send({message : err.message})
+    }
+
+    // question.options = vote;
+    // question.response = question.response + 1;
+    // await question.save();
+    // return res.status(200).json(question)
 };
 
 const updateQuestion = async (req, res) => {
@@ -66,11 +113,16 @@ const updateQuestion = async (req, res) => {
 };
 
 const deleteQuestion = async (req, res) => {
-    const { id } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `No Question With id(${id})`})
-
-    const question = await questionModel.findByIdAndRemove(id);
-    res.json(question);
+    try{
+        const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `No Question With id(${id})`})
+    
+        const question = await questionModel.findByIdAndRemove(id);
+        res.json("Successfully Delete Question");
+    }catch(err){
+        res.status(500).send({message : err.message})
+    }
+   
 };
 
 const getMyQuestions = async (req, res) => {
@@ -94,5 +146,20 @@ const getMyQuestions = async (req, res) => {
     }
 };
 
+const getQuestion = async (req, res) => {
+    const { id } = req.params;
+    try{
 
-module.exports = { createQuestion, vote, updateQuestion, deleteQuestion, getMyQuestions };
+        const question = await questionModel.findById(id);
+
+        if(!question) return res.status(200).send({ message : `invalid id`});
+
+        res.status(200).send({question , message : "Successfully get  Question"});
+
+    }catch(err){
+        res.status(500).send({message : err.message});
+    }
+};
+
+
+module.exports = { createQuestion, vote, updateQuestion, deleteQuestion, getMyQuestions, getQuestion, getAllQuestions, getPublicQuestion };

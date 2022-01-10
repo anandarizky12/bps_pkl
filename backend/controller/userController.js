@@ -56,7 +56,7 @@ const login = async (req ,res) =>{
         console.log(user);
         if(!user){
             
-            return res.status(401).send({message : 'The email and password you entered did not match our records. Please double-check and try again.'});
+            return res.status(401).json( 'The email and password you entered did not match our records. Please double-check and try again.');
 
         };
 
@@ -64,15 +64,14 @@ const login = async (req ,res) =>{
 
         console.log(match);
         if(!match){
-            return res.status(401).send({message : 'Password incorrect'})
+            return res.status(401).json('Password incorrect')
         };
 
 
         sendUserData(user,200, res);
 
     }catch(err){
-        res.status(500).send({message : err.message});
-        console.log(err.message);
+        res.status(500).json(err.message);
     }
 
 };

@@ -3,11 +3,13 @@ import router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../actions/user'
 import MyAlert  from '../components/alert/alert'
+import axios from 'axios'
+import { sendAlert } from '../actions/alertLogin'
+
+
 
 function login() {
-
-  
-
+    const [open , setOpen] = React.useState(false)
     const [state, setState] = React.useState({
         email: '',
         password: '',
@@ -23,14 +25,33 @@ function login() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
+
         e.preventDefault();
-            dispatch(loginUser(state.email, state.password));
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
+            await axios.post('/api/login', state , config)
+                    .then(res => {
+                        dispatch(loginUser(res.data));
+                        setOpen(true)
+                        dispatch(sendAlert('success', 1));
+                        router.push('/');
+                    })
+                    .catch(err => {
+                        setOpen(true)
+                        dispatch(sendAlert(err.request.response, 3));
+                
+                    });
     };
 
     const userLogin = useSelector((state)=>state.userLogin);
     const { userInfo } = userLogin;
     console.log(userLogin);
+
     React.useEffect(()=>{
         if(userInfo){
             router.push('/')
@@ -42,7 +63,7 @@ function login() {
 
     return (
         <div className="flex w-screen h-screen">
-            <MyAlert/>
+            <MyAlert open={open} setOpen={setOpen}/>
             <div className="ml-36 mt-24 w-full">
                 <div className="">
                     <p className="text-2xl text-gray-600">Selamat Datang</p>

@@ -1,12 +1,22 @@
 import React from 'react';
 import ShareIcon from '@mui/icons-material/Share';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import EditIcon from '@mui/icons-material/Edit';
 import moment from 'moment';
-
+import { useRouter } from 'next/router';
+import DraggableDialog from '../confirmation/DeleteConfirmation';
+import Share from '../share/Share';
 const TableMySurvey = ({questions}) => {
+    const router = useRouter();
+    const [open, setOpen] = React.useState(false);
+    const [shareid, setShareId] = React.useState('');
+    const url = `http://localhost:3000/survey/${shareid}` ;
 
+    const openShare = (id) => {
+        setShareId(id);
+        setOpen(true);
+    }
     return (
         <div className="flex justify-center flex-col items-center">
             <div className="w-8/12">
@@ -24,25 +34,28 @@ const TableMySurvey = ({questions}) => {
 
                 </tr>
             {questions.length >= 1 && questions.map((question, index) => {
-                
+              
                 return (
                     <tr key={index} className="text-center text-xs h-20 text-gray-500 bg-gray-100">
                  
-                            <td  className="text-left pl-2 ">
-                                <p className="text-blue-500 font-bold">{question.title}</p>
-                                <p className="text-gray-400">Created {moment(question.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                            <td  
+                                onClick={() => {router.push(`/survey/${question._id}`)}}
+                                className="group text-left pl-2 cursor-pointer hover:bg-gray-200 transition duration-100 ease-in-out">
+                                <p className="text-blue-500 font-bold  group-hover:text-blue-800">{question.title}</p>
+                                <p className="text-gray-400 group-hover:text-gray-600">Created {moment(question.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
                             </td>
                             <td className="font-bold text-lg ">{question.response}</td>
                             <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
                             <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                            <td><DeleteIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                            <td><ShareIcon onClick={()=>alert(question._id)}  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                
+                            <td><DraggableDialog id={question._id} /></td>
+                            <td><ShareIcon onClick={()=>openShare(question._id)}  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+
                      </tr>
                     )
             })}
           
             </table>
+            <Share open={open} setOpen={setOpen} url={url} />
         </div>
     )
 };

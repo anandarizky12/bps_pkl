@@ -30,34 +30,25 @@ import { sendAlert } from './alertLogin';
 
 
 
-export const loginUser = (email, password) => async (dispatch) => {
+export const loginUser = (data) => async (dispatch) => {
     
     
     try {
         dispatch({ type: LOGIN_USER });
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        
-        const res = await axios.post('/api/login', { email, password }, config);
-        console.log(res);
+
         dispatch({
             type: LOGIN_SUCCESS,
-            payload: res.data
+            payload: data
         });
-        dispatch(sendAlert("Login Success", 1));
-        localStorage.setItem('userInfo', JSON.stringify(res.data));
+    
+        localStorage.setItem('userInfo', JSON.stringify(data));
 
-        
     } catch (err) {
         dispatch({
             type: LOGIN_FAILED,
-            payload: err.response.data.message
+            payload: err
         });
-        dispatch(sendAlert(err.response.data.message ? err.response.data.message : "Server Error", 3))
+       
 }};
 
 export const registerUser = ( name, email, password )=> async (dispatch) => {

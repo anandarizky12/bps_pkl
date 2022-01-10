@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Avatar from "@material-ui/core/Avatar";
 import ActiveLink from '../utils/ActiveLink/ActiveLink';
 import Image from 'next/image'
+import AccountMenu from '../dropdown/Dropdown';
 
 function Navbar() {
     const router = useRouter();
@@ -43,7 +44,7 @@ function Navbar() {
                     />
                     </Link>
                     <div className="flex-1 flex items-center justify-end text-xs uppercase tracking-wider gap-4">
-                        <Avatar size="small"/>
+                        <AccountMenu/>
 				    </div>
                 </div>
             </div>

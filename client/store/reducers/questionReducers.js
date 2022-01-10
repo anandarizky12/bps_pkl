@@ -22,7 +22,11 @@ import {
 
     GET_MYQUESTIONS_SUCCESS,
     GET_MYQUESTIONS_FAILED,
-    GET_MYQUESTIONS
+    GET_MYQUESTIONS,
+   
+    GET_QUESTION_SUCCESS,
+    GET_QUESTION_FAILED,
+    GET_QUESTION
     } from '../../actions/actions_type/actions_type_question';
 
 
@@ -74,6 +78,18 @@ import {
             case GET_MYQUESTIONS_SUCCESS:
               return { loading: false, data: action.payload }
             case GET_MYQUESTIONS_FAILED:
+              return { loading: false, error: action.payload }
+            default:
+              return state;
+    }};
+
+    export const getQuestionReducer = (state = {}, action) => {
+    switch(action.type) {
+            case GET_QUESTION:
+              return { loading: true }
+            case GET_QUESTION_SUCCESS:
+              return { loading: false, data: action.payload }
+            case GET_QUESTION_FAILED:
               return { loading: false, error: action.payload }
             default:
               return state;

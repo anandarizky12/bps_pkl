@@ -22,6 +22,7 @@ const questionSchema = mongoose.Schema({
         type : String,
         required : true
     },
+    voted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     answer : [options],
     response : {
         type : Number,
