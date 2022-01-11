@@ -8,7 +8,7 @@ import { sendAlert } from '../actions/alertLogin'
 
 
 
-function login() {
+function Login() {
     const [open , setOpen] = React.useState(false)
     const [state, setState] = React.useState({
         email: '',
@@ -50,7 +50,7 @@ function login() {
 
     const userLogin = useSelector((state)=>state.userLogin);
     const { userInfo } = userLogin;
-    console.log(userLogin);
+
 
     React.useEffect(()=>{
         if(userInfo){
@@ -94,4 +94,4 @@ function login() {
     )
 }
 
-export default login
+export default Login

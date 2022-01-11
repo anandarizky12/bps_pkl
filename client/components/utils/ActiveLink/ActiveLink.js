@@ -14,13 +14,17 @@ function ActiveLink({ children, href, type }) {
   };
 
   return (
+  <div
+  className={`${router.asPath === href && "border-b-2"} py-2 box-border`}
+  >
     <a
       href={href}
       onClick={handleClick}
-      className={type == "link" ? router.asPath === href ? "text-yellow-400 font-semibold cursor" : "text-gray-200 " : type == "bottom" ? "text-green-500" : "text-green-500"}
+      className={ type == "link" ? router.asPath === href ? "font-semibold cursor " : "font-semibold  text-gray-100 " : type == "bottom" ? "text-green-500" : "text-green-500"   }
     >
       {children}
     </a>
+    </div>
   );
 }
 

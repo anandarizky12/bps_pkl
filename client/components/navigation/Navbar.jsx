@@ -1,15 +1,14 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import Avatar from "@material-ui/core/Avatar";
+
 import ActiveLink from '../utils/ActiveLink/ActiveLink';
-import Image from 'next/image'
+
 import AccountMenu from '../dropdown/Dropdown';
 
 function Navbar() {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
-    console.log(open)
+
     return (
         <div 
             hidden={
@@ -18,7 +17,7 @@ function Navbar() {
                 : false
             }
         >
-            <div className="bg-blue-900 text-gray-200 w-full fixed z-10 px-6 top-0 inset-x-0">
+            <div className="bg-green-400 text-gray-200 w-full fixed z-10 px-24 top-0 inset-x-0">
                 <div className="h-14 py-4 container mx-auto flex items-center justify-center">
                     <div x-data="{ open: false }"   className="z-10 flex-1">
                         <div   
@@ -31,18 +30,10 @@ function Navbar() {
                             <ActiveLink href="/mysurvey" type="link">My Survey</ActiveLink>
                             <ActiveLink href="/create" type="link">Create Pooling</ActiveLink>
                         </div>
-                        <button  type="button"  onClick={()=>setOpen(!open)}  className={ open ? 'hidden' : 'block'}  className="block md:hidden text-4xl font-thin">＝</button>
+                        <button  type="button"  onClick={()=>setOpen(!open)}  className={` ${open ? 'hidden' : 'block' } block md:hidden text-4xl font-thin`} >＝</button>
                         <button  type="button"  onClick={()=>setOpen(false)} className={` ${!open ? 'hidden' : 'block' } md:hidden absolute top-0 right-0 leading-none p-8 text-xl z-50`}>╳</button>
                     </div>
-                    <Link href='/'>
-                    <Image
-                        // loader={myLoader}
-                        src="/logobps.png"
-                        alt="Picture of the author"
-                        width={240}
-                        height={50}
-                    />
-                    </Link>
+              
                     <div className="flex-1 flex items-center justify-end text-xs uppercase tracking-wider gap-4">
                         <AccountMenu/>
 				    </div>

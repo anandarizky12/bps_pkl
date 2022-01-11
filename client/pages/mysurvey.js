@@ -5,7 +5,7 @@ import { getMyQuestions } from '../actions/questions'
 import MySurvey from '../components/tableMySurvey/MySurvey'
 import LinearProgress from '@mui/material/LinearProgress';
 
-function mysurvey() {
+function Mysurvey() {
 
     const dispatch = useDispatch()
     const { data, message }= useSelector(state => state.myQuestion)
@@ -41,4 +41,4 @@ function mysurvey() {
     )
 }
 
-export default mysurvey
+export default Mysurvey

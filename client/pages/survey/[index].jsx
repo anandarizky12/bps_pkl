@@ -26,7 +26,7 @@ function Votesurvei() {
             {!data ?    
             <div className="w-full fixed top-14"><LinearProgress/></div>
             : 
-            <Survey data={data.data.question} id={query} />
+            <Survey data={data} id={query} />
             }
            
         </div>

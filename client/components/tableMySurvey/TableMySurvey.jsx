@@ -18,11 +18,11 @@ const TableMySurvey = ({questions}) => {
         setOpen(true);
     }
     return (
-        <div className="flex justify-center flex-col items-center">
-            <div className="w-8/12">
-                <p className="text-2xl font-normal text-gray-500 my-5 ">Your Survey Down Below</p>
+        <div className="flex justify-center flex-col items-center mt-24 px-24">
+            <div className="w-full">
+                <p className="text-3xl font-light mb-2">Your Survey Down Below!</p>
             </div>
-            <table className="w-8/12 ">
+            <table className="w-full ">
                 <tr className="bg-gray-500 text-gray-100 h-10 ">
                
                     <th className="font-light border w-3/12 text-left pl-2">Title</th>
@@ -46,7 +46,7 @@ const TableMySurvey = ({questions}) => {
                             </td>
                             <td className="font-bold text-lg ">{question.response}</td>
                             <td><EqualizerIcon className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
-                            <td><EditIcon  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
+                            <td><EditIcon onClick={()=>router.push(`edit/${question._id}`)} className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
                             <td><DraggableDialog id={question._id} /></td>
                             <td><ShareIcon onClick={()=>openShare(question._id)}  className="text-gray-500 cursor-pointer hover:text-gray-400"/></td>
 

@@ -15,11 +15,11 @@ export default function Home({data}) {
 
   console.log(data)
   return (
-    <div className="px-10 py-5 mt-12 w-full flex flex-col justify-center items-center ">
-      <p className="text-3xl font-light">Welcome, <span className="text-yellow-600">Alex</span>!</p>
-      <div className='flex w-11/12 flex-wrap justify-between '>
-          {data.map((n)=>(
-              <BasicCard data={n} />
+    <div className="py-5 mt-24 w-full flex flex-col justify-center px-24">
+      <p className="text-3xl font-light">Welcome, <span>Public Vote Available Down Below</span>!</p>
+      <div className='flex w-full flex-wrap justify-between '>
+          {data.map((n,i)=>(
+              <BasicCard key={i} data={n} />
             ))
           }
       </div>

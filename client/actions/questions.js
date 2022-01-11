@@ -121,37 +121,22 @@ export const deleteQuestion = (id) => async (dispatch, getState) => {
     }
 
 }
-export const editQuestion = (id, question) => async (dispatch, getState) => {
+export const editQuestion = (question) => async (dispatch, getState) => {
     try{
         dispatch({ 
             type: EDIT_QUESTION
         });
-
-       
-        const {
-            userLogin: { userInfo },
-        } = getState();
-        
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + userInfo.token,
-            }
-        };
-      
-
-        const data  = await axios.put('/api/question/'+id, question, config);
-        console.log(data, "ini data");
+     
         dispatch({
             type: EDIT_QUESTION_SUCCESS,
-            payload: data
+            payload: question
         });
         
 
     }catch(error){
         dispatch({
-            type: EDIT_QUESTION_SUCCESS,
-            payload: data
+            type: EDIT_QUESTION_FAILED,
+            payload: "ERROR"
         });
 
     }
@@ -219,7 +204,7 @@ export const getQuestion = (id) => async (dispatch, getState) => {
  
         dispatch({
             type: GET_QUESTION_SUCCESS,
-            payload: data
+            payload: data.data.question
         });
 
     }catch(error){

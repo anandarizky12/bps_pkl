@@ -98,18 +98,28 @@ const vote = async (req, res) => {
 };
 
 const updateQuestion = async (req, res) => {
-    const { id } = req.params;
-    const { title , options , answer} = req.body;
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `Id Invalid`});
 
-    const question = await questionModel.findById(id);
-    question.title = title;
-    question.question = question;
-    question.options = answer.map(n =>{
-        return {option:n}
-    });
-    await question.save();
-    return res.status(200).json(question)
+    try{
+        const { id } = req.params;
+        const { title , question ,options , answer, private} = req.body;
+        if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `Id Invalid`});
+
+
+        const questionDb = await questionModel.findById(id);
+        
+        if(questionDb.userid != req.user.id) return res.status(404).send({message : `You Can't Update This Question`});
+        questionDb.title = title;
+        questionDb.question = question;
+        questionDb.private = private;
+        questionDb.answer = options.map(n =>{
+            return {option:n}
+        });
+        await questionDb.save();
+        return res.status(200).json(questionDb);
+    }catch(err){
+        console.log(err)
+        res.status(500).json(err.message)
+    }
 };
 
 const deleteQuestion = async (req, res) => {
@@ -157,7 +167,7 @@ const getQuestion = async (req, res) => {
         res.status(200).send({question , message : "Successfully get  Question"});
 
     }catch(err){
-        res.status(500).send({message : err.message});
+        res.status(500).json({message : err.message});
     }
 };
 

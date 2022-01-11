@@ -1,37 +1,71 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-import Autoaddoptions from '../components/options/autoaddoptions';
-
+import Autoaddoptions from '../../components/options/AutoAddOptions';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import MyAlert from '../components/alert/alert';
-import { createQuestion } from '../actions/questions';
+import MyAlert from '../../components/alert/alert';
+import { editQuestion, getQuestion } from '../../actions/questions' 
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function Create() {
+
+function CardEdit({data, id}) {
+
     
+  
     const [optionAdd,setoptionAdd]=React.useState(1);
     const { userInfo } = useSelector(state => state.userLogin);
-    const  create = useSelector(state => state.create);
     const dispatch = useDispatch();
-    const [payload, setPayload] = React.useState({private : false, userid : userInfo ? userInfo.userData.id : null });
+  
+
+
+    const [payload, setPayload] = React.useState({
+        private : data.private, 
+        userid : userInfo ? userInfo.userData.id : null,
+        title : data.title,
+        question : data.question,
+      
+    
+    });
+
+    ///arrrrrr
+    const [options , setOptions] = React.useState(
+      data.answer.map((item,index)=>{
+        return {
+          'answer':item
+        } 
+        
+    }))
+    
+
     const [loading, setLoading] = React.useState(false);
     const [alert, setAlert] = React.useState(false);
+   
+    
+
 
     const handleSubmit = (e) => {
       e.preventDefault();
       setLoading(true);
+      setPayload({
+        ...payload,
+        options : options
+      })
       let answer = [];
       let data = {};
-     
+      
       for (let val in payload) {
-        if(val.slice(0,6) == "answer"){
-          answer.push(payload[val]);
-        }else {
+        if(val !== 'options'){
           data[val] = payload[val];
-        }}
+        }else{
+          for(let i = 0 ; i < payload.options.length ; i++){
+            answer.push(payload.options[i].answer.option)
+          }
+        }
+      
+      }
       if(answer.length >= 2){
         
         data['options'] = answer;
@@ -42,24 +76,25 @@ function Create() {
               'Authorization': 'Bearer ' + userInfo.token
           }
         };
+
                axios
-               .post('/api/question', data, config)
+               .put(`/api/question/${id}`, data, config)
                .then(res => {
-                 dispatch(createQuestion(res.data))
+                 dispatch(editQuestion(res.data))
                  setLoading(false);
                  setAlert(true);
                  setPayload({private : false, userid : userInfo ? userInfo.userData.id : null });
-                 dispatch({type: 'SUCCESS_ALERT', payload: 'Successfully created Data'});
+                 dispatch({type: 'SUCCESS_ALERT', payload: 'Successfully Edit Data'});
                 }).catch((err)=>{
                  setLoading(false)
                  const msg = JSON.parse(err.request.response);     
                  setAlert(true);
-                 dispatch({type: 'ERROR_ALERT', payload: msg});
+                 dispatch({type: 'ERROR_ALERT', payload: err.request.response});
                })
             }else{
               setLoading(false);
               setAlert(true);
-              dispatch({type: 'ERROR_ALERT', payload: 'Please add at least two options'});
+              dispatch({type: 'ERROR_ALERT', payload: 'Please add at least two options OR click One more time'});
             }
           };
 
@@ -69,6 +104,12 @@ function Create() {
         ...payload,
         [name]: value
       })};
+
+      const handleOptionChange = (e,index) => {
+        const{ name, value } = e.target;
+        options[index].answer.option = value
+        setOptions([...options])
+      }
 
       const handleCheckBox = e => {
         const { id, checked } = e.target
@@ -80,8 +121,8 @@ function Create() {
 
 
     return (
-      <div className= "mt-24 py-5 flex align-center justify-center ">
-             <form onSubmit={(e)=>handleSubmit(e)} className="border  w-9/12 p-5 shadow-md">
+        <div className='w-full flex items-center justify-center'>
+           <form onSubmit={(e)=>handleSubmit(e)} className="border  w-9/12 p-5 shadow-md">
                 <p className="text-2xl font-light my-5">Create a new Survei</p>
                 <TextField
                 id="filled-multiline-static"
@@ -110,7 +151,7 @@ function Create() {
                 style={{marginTop: '20px'}}
                 />
 
-                <TextField
+                {/* <TextField
                 id="filled-multiline-static"
                 label="type choose answer ..."
                 multiline
@@ -134,12 +175,31 @@ function Create() {
                 variant='outlined'
                 style={{marginTop: '10px'}}
                 />
-                <Autoaddoptions add = {optionAdd} setadd={setoptionAdd} handleChange={handleChange}/>
+                <Autoaddoptions add = {optionAdd} setadd={setoptionAdd} handleChange={handleChange}/> */}
+                {
+                    options.map((item,index)=>{
+                        return(
+                            <TextField
+                            key={index}
+                            id="filled-multiline-static"
+                            label="type choose answer ..."
+                            multiline
+                            value={item.answer.option}
+                            onChange={e =>handleOptionChange(e,index)}
+                            fullWidth
+                            size="small"
+                            name={"answer"}
+                            variant='outlined'
+                            style={{marginTop: '10px'}}
+                            />
+                        )
+                    })
+                }
               
                 <div className='mt-2 text-gray-600 '>
-                  <input id={"private"} type="checkbox" onChange={(e)=>handleCheckBox(e) }/>
+                  <input checked= { payload.private  } id={"private"} type="checkbox" onChange={(e)=>handleCheckBox(e) }/>
                   <label htmlFor="private"> Private</label>
-                  <p className="font-normal text-gray-500 text-xs">*if it&rsquo;s private, the survey only shown to user who have the link (Not Public)</p>
+                  <p className="font-normal text-gray-500 text-xs">*if it&apos;s private, the survey only shown to user who have the link (Not Public)</p>
                 </div>
                 <div className="flex justify-end items-center">
                    <button className="text-gray-500 flex  items-center" style={{marginTop : '10px', marginRight : '10px', width : '90px'}}  type="submit">
@@ -154,9 +214,8 @@ function Create() {
                 {/* {loading ? <p className="text-4xl  my-5">Loading...</p> : null} */}
                 <MyAlert setOpen={ setAlert } open = {alert}/>
              </form>
-      </div>
+        </div>
     )
 }
 
-export default Create
-
+export default CardEdit

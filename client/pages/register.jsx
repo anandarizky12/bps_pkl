@@ -4,13 +4,13 @@ import router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../actions/user';
 import MyAlert from '../components/alert/alert';
-function register() {
+function Register() {
 
     const dispatch = useDispatch();
     const { userInfo } = useSelector(state => state.userRegister);
 
     console.log(userInfo)
-    const [state, useState] = React.useState({
+    const [state, usestate] = useState({
         nama: '',
         email: '',
         password: '',
@@ -19,7 +19,7 @@ function register() {
     const handleInput = (e) => {
         const {name, value} = e.target;
 
-        useState({
+        usestate({
             ...state,
             [name]: value
     })};
@@ -82,4 +82,4 @@ function register() {
     )
 }
 
-export default register
+export default Register
