@@ -20,19 +20,19 @@ export default function BasicCard({data}) {
     <Card onClick={()=>Router.push(`/survey/${data._id}`)} className="shadow-md cursor-pointer hover:bg-gray-100" sx={{ minWidth: 275 , maxWidth: 275 , marginTop : '22px'}}>
       <CardContent>
         <Typography variant="caption"  color="text.secondary" gutterBottom>
-          created by {data._creator ? data._creator.name : "Ahmad"}
+          created by <span className={"font-semibold"}> {data._creator ? data._creator.name : "Unknown"}</span>
         </Typography>
-        <Typography variant="subtitle1" component="div">
+        <Typography className="text-green-500" variant="subtitle1" component="div">
           {data.title}
         </Typography>
         
       </CardContent>
       <CardActions className='flex items-center justify-between'>
         <Typography className="ml-2" variant="caption" color="text.secondary">
-         {moment(data.date).endOf('day').fromNow()}
+         {moment(data.date).format("MMM Do YY")}
         </Typography>
         <Typography className="mr-2" variant="caption" color="text.secondary">
-          Total Votes {data.response}
+          Total Votes <span className={"font-semibold"}>{data.response}</span>
         </Typography>
       </CardActions>
     </Card>

@@ -6,16 +6,16 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
+
 import Logout from '@mui/icons-material/Logout';
-import Router from 'next/router';
+
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const { userInfo } = useSelector(state => state.userLogin);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,8 +24,9 @@ export default function AccountMenu() {
   };
   const logout = () => {
     localStorage.removeItem('userInfo');
-    window.location.reload();
+    window.location.reload(); 
   }
+  console.log(userInfo) 
   return (
     <React.Fragment>
       <Box sx={{ position : 'absolute', display: 'flex', flexDirections : "column" ,alignItems: 'center', textAlign: 'center' }}>
@@ -38,7 +39,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}> {userInfo ? userInfo.userData.name.charAt(0) : null}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -79,7 +80,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem>
-          <Avatar /> Profile
+          <Avatar /> {userInfo ? userInfo.userData.name : null}
         </MenuItem>
         <Divider />
     

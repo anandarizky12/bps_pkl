@@ -2,7 +2,7 @@ import React from 'react'
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuestion } from '../../actions/questions'
-import Custom404 from '../../components/custom404/Custom404';
+
 import Survey from '../../components/survey/Survey';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -12,7 +12,14 @@ function Votesurvei() {
     const query  = router.query.index;
     const dispatch = useDispatch();
     const { data } = useSelector(state => state.question);
-    
+    const { userInfo } = useSelector((state)=>state.userLogin);
+
+    React.useEffect(()=>{
+      if(!userInfo){
+          router.push('/login')
+      }
+    },[userInfo])
+  
       
     React.useEffect(() => {
         if(query){
@@ -22,7 +29,7 @@ function Votesurvei() {
 
 
     return (
-        <div className = "flex items-center justify-center w-full h-screen" >
+        <div className = "flex ml-6  mt-20 md:mt-0 md:justify-center w-full" >
             {!data ?    
             <div className="w-full fixed top-14"><LinearProgress/></div>
             : 

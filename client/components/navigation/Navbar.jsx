@@ -17,13 +17,13 @@ function Navbar() {
                 : false
             }
         >
-            <div className="bg-green-400 text-gray-200 w-full fixed z-10 px-24 top-0 inset-x-0">
+            <div className="bg-green-400 text-gray-200 w-full fixed z-10 px-5 md:px-24 top-0 inset-x-0">
                 <div className="h-14 py-4 container mx-auto flex items-center justify-center">
                     <div x-data="{ open: false }"   className="z-10 flex-1">
                         <div   
                             className={` ${open ?  'flex' : 'hidden'} fixed md:relative top-0 left-0 w-full 
                             md:w-auto h-screen md:h-auto md:flex flex-col md:flex-row items-center 
-                            justify-center md:justify-start z-40 bg-gray-200 md:bg-transparent 
+                            justify-center md:justify-start z-40 bg-green-400 md:bg-transparent 
                             leading-loose font-sans uppercase text-gray-200 text-base md:text-xs 
                             tracking-wider gap-8 `}>
                             <ActiveLink href="/" type="link">Home</ActiveLink>

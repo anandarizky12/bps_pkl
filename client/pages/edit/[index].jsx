@@ -5,9 +5,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import MyAlert from '../../components/alert/alert';
 import { editQuestion, getQuestion } from '../../actions/questions' 
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import SaveIcon from '@mui/icons-material/Save';
-import axios from 'axios';
+
 import CircularProgress from '@mui/material/CircularProgress';
 import CardEdit from '../../components/card/CardEdit';
 
@@ -17,6 +15,14 @@ function Index() {
   const dispatch = useDispatch();
   const id = router.query.index;
   const { data } = useSelector(state => state.question);
+  const { userInfo } = useSelector((state)=>state.userLogin);
+
+  React.useEffect(()=>{
+    if(!userInfo){
+        router.push('/login')
+    }
+  },[userInfo])
+
   React.useEffect(() => {
         
     dispatch(getQuestion(id))
@@ -24,7 +30,7 @@ function Index() {
   }, [id]);
 
     return (
-      <div className= "mt-24 py-5 flex align-center justify-center ">
+      <div className= "mt-24 py-5 flex align-center md:justify-center ">
           {data ? 
              <CardEdit data={data} id={id}/>
             :

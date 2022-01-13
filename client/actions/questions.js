@@ -70,6 +70,7 @@ export const createQuestion = (question) => async (dispatch, getState) => {
             type: CREATE_QUESTION_SUCCESS,
             payload: question.message
         });
+        window.location.reload();
         
 
     }catch(error){

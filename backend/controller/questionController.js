@@ -64,7 +64,8 @@ const vote = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send({message : `Id Invalid`});
 
     const question = await questionModel.findById(id);
-   
+    
+    if(!idoption) return res.status(400).json(`No Answer selected, Please select an answer`);
     const vote = question.answer.map((n)=>{
         return n._id == idoption ? {    
             votes: n.votes + 1 ,

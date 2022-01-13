@@ -9,17 +9,25 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { useRouter } from 'next/router';
 function Create() {
     
     const [optionAdd,setoptionAdd]=React.useState(1);
     const { userInfo } = useSelector(state => state.userLogin);
-    const  create = useSelector(state => state.create);
+
     const dispatch = useDispatch();
     const [payload, setPayload] = React.useState({private : false, userid : userInfo ? userInfo.userData.id : null });
     const [loading, setLoading] = React.useState(false);
     const [alert, setAlert] = React.useState(false);
+    const router = useRouter();
+  
+    React.useEffect(()=>{
+      if(!userInfo){
+          router.push('/login')
+      }
+    },[userInfo])
 
+    
     const handleSubmit = (e) => {
       e.preventDefault();
       setLoading(true);
@@ -50,6 +58,7 @@ function Create() {
                  setAlert(true);
                  setPayload({private : false, userid : userInfo ? userInfo.userData.id : null });
                  dispatch({type: 'SUCCESS_ALERT', payload: 'Successfully created Data'});
+              
                 }).catch((err)=>{
                  setLoading(false)
                  const msg = JSON.parse(err.request.response);     
@@ -80,8 +89,8 @@ function Create() {
 
 
     return (
-      <div className= "mt-24 py-5 flex align-center justify-center ">
-             <form onSubmit={(e)=>handleSubmit(e)} className="border  w-9/12 p-5 shadow-md">
+      <div className= "mt-24 py-5 flex md:justify-center ">
+             <form onSubmit={(e)=>handleSubmit(e)} className="border  w-full md:w-9/12 p-5 shadow-md">
                 <p className="text-2xl font-light my-5">Create a new Survei</p>
                 <TextField
                 id="filled-multiline-static"

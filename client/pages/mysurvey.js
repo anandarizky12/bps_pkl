@@ -4,20 +4,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getMyQuestions } from '../actions/questions'
 import MySurvey from '../components/tableMySurvey/MySurvey'
 import LinearProgress from '@mui/material/LinearProgress';
-
+import { useRouter } from 'next/router'
 function Mysurvey() {
 
     const dispatch = useDispatch()
     const { data, message }= useSelector(state => state.myQuestion)
     const { userInfo } = useSelector(state => state.userLogin);
     const [questions, setQuestions] = React.useState([]);
-
+    const router = useRouter();
     // const id = localStorage.getItem('userInfo')
-
+  
 
     React.useEffect(() => {
         if(userInfo){
             dispatch(getMyQuestions(userInfo.userData.id));
+        }else{
+            router.push('/login')
         }
     }, [userInfo]);
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-import Autoaddoptions from '../../components/options/AutoAddOptions';
-import { useRouter } from 'next/router';
+
 import { useDispatch, useSelector } from 'react-redux';
 import MyAlert from '../../components/alert/alert';
 import { editQuestion, getQuestion } from '../../actions/questions' 
@@ -18,7 +17,7 @@ function CardEdit({data, id}) {
     const [optionAdd,setoptionAdd]=React.useState(1);
     const { userInfo } = useSelector(state => state.userLogin);
     const dispatch = useDispatch();
-  
+
 
 
     const [payload, setPayload] = React.useState({
@@ -122,7 +121,7 @@ function CardEdit({data, id}) {
 
     return (
         <div className='w-full flex items-center justify-center'>
-           <form onSubmit={(e)=>handleSubmit(e)} className="border  w-9/12 p-5 shadow-md">
+           <form onSubmit={(e)=>handleSubmit(e)} className="border w-full md:w-9/12 p-5 shadow-md">
                 <p className="text-2xl font-light my-5">Create a new Survei</p>
                 <TextField
                 id="filled-multiline-static"

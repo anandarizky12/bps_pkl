@@ -8,6 +8,7 @@ import moment from 'moment';
 import ButtonsSurvey from "./ButtonsSurvey"
 import { sendAlert } from "../../actions/alertLogin"
 import MyAlert from "../alert/alert";
+import Result from "./Result"
 
 
 const Survey = ({ data , id}) => {
@@ -19,6 +20,8 @@ const Survey = ({ data , id}) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const url = 'http://localhost:3000' + router.asPath;
+
+    console.log(data.answer)
 
     const handleVote = async () =>{
         const data = {
@@ -38,8 +41,9 @@ const Survey = ({ data , id}) => {
             .then(
                 (res) => {
                     setAlert(true);
-                    console.log(res.data)
-                    return dispatch(sendAlert(res.data.message, 1))
+                   
+                    dispatch(sendAlert(res.data.message, 1))
+                 
                 }
 
             )
@@ -51,32 +55,34 @@ const Survey = ({ data , id}) => {
                 }
             )
 }
-     
-    console.log(userInfo.userData.id ,value, idoption, id ,data)
-    return (
-        <div className="bg-gray-200 border border-gray-100 rounded-sm b-2  md:w-8/12  p-5">
-            <MyAlert open={alert} setOpen={setAlert} />
-            <div className="flex sm:justify-left">
-                <div className="flex flex-col items-left">
-                    <h1 className="md:text-2xl sm:text-4x1 mb-2 font-bold text-blue-700">{data.title}</h1>
-                    <p className="antialiased text-opacity-80 text-gray-400 text-base-400 italic text-xs md:text-base ">Started {moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
-                </div>
-            </div>
 
-            <div className="py-5 w-full h-full text-sm md:text-xl text-gray-700" >
-                <div>
-                    <p>{data.question}</p>
-                    {data.answer.map((n,i)=>(
-                        <RadioButton key={i} text={n.option} setValueSelected={setValueSelected} id={n._id}/>
-                    ))}
+    return (
+        <div className="md:mt-32 shadow-md p-2  flex justify-between bg-white flex-col md:flex-row border border-gray-100 rounded-sm  w-full md:w-10/12 lg:w-8/12  md:p-5">
+            <MyAlert open={alert} setOpen={setAlert} />
+            <div>
+                <div className="flex sm:justify-left">
+                    <div className="flex flex-col items-left">
+                        <h1 className="md:text-2xl sm:text-4x1 mb-2 font-bold text-green-400">{data.title}</h1>
+                        <p className="antialiased text-opacity-80 text-gray-400 text-base-400 italic text-xs md:text-base ">Started {moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                    </div>
                 </div>
-                <div className="mt-10">
-                        <p>Total Votes</p>
-                        {/* <p>{totalVotes}</p> */}
+
+                <div className="py-5 w-full h-full text-sm md:text-xl text-gray-700" >
+                    <div>
+                        <p>{data.question}</p>
+                        {data.answer.map((n,i)=>(
+                            <RadioButton key={i} text={n.option} setValueSelected={setValueSelected} id={n._id}/>
+                        ))}
+                    </div>
+                    <div className="mt-10">
+                            <p>Total Votes</p>
+                            {/* <p>{totalVotes}</p> */}
+                    </div>
+                    <ButtonsSurvey handleVote={handleVote} url={url}/>
+                    {/* <Donut data={options}/> */}
                 </div>
-                <ButtonsSurvey handleVote={handleVote} url={url}/>
-                {/* <Donut data={options}/> */}
             </div>
+            <Result total={data.response} data={data.answer}/>
         </div>
     )
 };

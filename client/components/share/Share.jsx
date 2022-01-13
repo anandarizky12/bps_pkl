@@ -26,10 +26,10 @@ function Share({open, setOpen, url}) {
     return (
         <>
           {open && 
-            <div className="fixed z-50 w-screen h-screen top-0 bg-black bg-opacity-75 
+            <div className="fixed left-0 z-50 w-screen h-screen top-0 bg-black bg-opacity-75 
                             flex justify-center items-center transition-opacity duration-300">
                 <ClickAwayListener onClickAway={() => {setOpen(false)}}>
-                    <div className="w-9/12 h-52 md:w-4/12 md:h-2/6 rounded-sm bg-gray-200 opacity-100 text-gray-600 p-4 flex justify-around flex flex-col">
+                    <div className=" w-9/12 h-52 md:w-4/12 md:h-2/6 rounded-sm bg-gray-200 opacity-100 text-gray-600 p-4 justify-around flex flex-col">
                         <div className="flex justify-between items-center">
                                 <p className="text-md">Share</p>
                                 <IconButton onClick={() => {setOpen(false)}}>
@@ -93,7 +93,7 @@ function Share({open, setOpen, url}) {
                                         <p className="text-xs md:text-sm">Twitter</p>
                                 </TwitterShareButton>
                         </div> 
-                        <div className="bg-gray-300 border p-2 border-gray-100 flex items-center justify-around rounded-sm p-1">
+                        <div className="bg-gray-300 border p-2 border-gray-100 flex items-center justify-around rounded-sm">
                             <input value={url} className="w-4/6 bg-transparent text-xs md:text-sm"/>
                             <CopyToClipboard text={url}
                                 onCopy={() => setState({copied: true})}>
