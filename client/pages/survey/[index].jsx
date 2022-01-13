@@ -14,6 +14,7 @@ function Votesurvei() {
     const { data } = useSelector(state => state.question);
     const { userInfo } = useSelector((state)=>state.userLogin);
 
+    console.log(router.query)
     React.useEffect(()=>{
       if(!userInfo){
           router.push('/login')
@@ -31,7 +32,7 @@ function Votesurvei() {
     return (
         <div className = "flex ml-6  mt-20 md:mt-0 md:justify-center w-full" >
             {!data ?    
-            <div className="w-full fixed top-14"><LinearProgress/></div>
+            <div className="w-full fixed left-0 top-14"><LinearProgress/></div>
             : 
             <Survey data={data} id={query} />
             }

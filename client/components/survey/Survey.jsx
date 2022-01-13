@@ -9,21 +9,22 @@ import ButtonsSurvey from "./ButtonsSurvey"
 import { sendAlert } from "../../actions/alertLogin"
 import MyAlert from "../alert/alert";
 import Result from "./Result"
-
+import { server } from "../../config/server"
 
 const Survey = ({ data , id}) => {
 
-    const [ value, setValue] = React.useState(null);
+    const [ loading, setLoading] = React.useState(false);
     const [alert , setAlert] = React.useState(false);
     const [idoption,setValueSelected]=React.useState('');
     const { userInfo } = useSelector(state => state.userLogin);
     const dispatch = useDispatch();
     const router = useRouter();
-    const url = 'http://localhost:3000' + router.asPath;
+    const url = server + router.asPath;
 
-    console.log(data.answer)
+
 
     const handleVote = async () =>{
+        setLoading(true);
         const data = {
             idoption,
             id,
@@ -41,15 +42,15 @@ const Survey = ({ data , id}) => {
             .then(
                 (res) => {
                     setAlert(true);
-                   
                     dispatch(sendAlert(res.data.message, 1))
-                 
+                    setLoading(false);
+                    window.location.reload();
                 }
 
             )
             .catch(
                 (err) => {
-               
+                 setLoading(false);
                   setAlert(true)
                   return dispatch(sendAlert(err.request.response, 3));
                 }
@@ -57,9 +58,9 @@ const Survey = ({ data , id}) => {
 }
 
     return (
-        <div className="md:mt-32 shadow-md p-2  flex justify-between bg-white flex-col md:flex-row border border-gray-100 rounded-sm  w-full md:w-10/12 lg:w-8/12  md:p-5">
+        <div className="md:mt-32 shadow-md p-5   flex justify-center items-center md:justify-between bg-white flex-col md:flex-row border border-gray-100 rounded-sm  w-full md:w-10/12 lg:w-8/12  md:p-5">
             <MyAlert open={alert} setOpen={setAlert} />
-            <div>
+            <div className="w-full"> 
                 <div className="flex sm:justify-left">
                     <div className="flex flex-col items-left">
                         <h1 className="md:text-2xl sm:text-4x1 mb-2 font-bold text-green-400">{data.title}</h1>
@@ -75,14 +76,13 @@ const Survey = ({ data , id}) => {
                         ))}
                     </div>
                     <div className="mt-10">
-                            <p>Total Votes</p>
-                            {/* <p>{totalVotes}</p> */}
+                         <ButtonsSurvey loading={loading} handleVote={handleVote} url={url}/>
                     </div>
-                    <ButtonsSurvey handleVote={handleVote} url={url}/>
+                  
                     {/* <Donut data={options}/> */}
                 </div>
             </div>
-            <Result total={data.response} data={data.answer}/>
+            <Result  total={data.response} data={data.answer}/>
         </div>
     )
 };

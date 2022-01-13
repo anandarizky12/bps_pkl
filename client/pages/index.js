@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux'
 import router from 'next/router'
 import BasicCard from '../components/card/CardQuestion';
+import { server } from '../config/server';
 
 export default function Home({data}) {
   const { userInfo } = useSelector((state)=>state.userLogin);
@@ -27,8 +28,10 @@ export default function Home({data}) {
   )
 }
 
+
+
 export async function getServerSideProps(context) {
-  const res = await fetch(`http://localhost:5000/api/publicquestion`)
+  const res = await fetch(`${server}/api/publicquestion`)
   const { data }  = await res.json()
 
   if (!res) {
