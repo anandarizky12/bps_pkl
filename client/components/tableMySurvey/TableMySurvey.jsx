@@ -7,11 +7,12 @@ import moment from 'moment';
 import { useRouter } from 'next/router';
 import DraggableDialog from '../confirmation/DeleteConfirmation';
 import Share from '../share/Share';
+import { server } from '../../config/server';
 const TableMySurvey = ({questions}) => {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
     const [shareid, setShareId] = React.useState('');
-    const url = `http://localhost:3000/survey/${shareid}` ;
+    const url = `${server}/survey/${shareid}` ;
 
     const openShare = (id) => {
         setShareId(id);
