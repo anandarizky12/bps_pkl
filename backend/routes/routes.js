@@ -8,7 +8,6 @@ const {
 } = require('../controller/userController');
 
 const {
-    isAdmin,
     isAuth,
 } = require('../middleware/auth');
 
