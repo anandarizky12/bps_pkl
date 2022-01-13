@@ -1,10 +1,8 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
-import Autoaddoptions from '../../components/options/AutoAddOptions';
+
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import MyAlert from '../../components/alert/alert';
-import { editQuestion, getQuestion } from '../../actions/questions' 
+import {  getQuestion } from '../../actions/questions' 
 
 import CircularProgress from '@mui/material/CircularProgress';
 import CardEdit from '../../components/card/CardEdit';

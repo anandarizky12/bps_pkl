@@ -14,7 +14,7 @@ function Votesurvei() {
     const { data } = useSelector(state => state.question);
     const { userInfo } = useSelector((state)=>state.userLogin);
 
-    console.log(router.query)
+   
     React.useEffect(()=>{
       if(!userInfo){
           router.push('/login')

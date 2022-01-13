@@ -1,7 +1,6 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-import Autoaddoptions from '../components/options/autoaddoptions';
-
+import Autoaddoptions from '../components/options/Autoaddoptions';
 import { useDispatch, useSelector } from 'react-redux';
 import MyAlert from '../components/alert/alert';
 import { createQuestion } from '../actions/questions';
